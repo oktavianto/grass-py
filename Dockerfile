@@ -2,10 +2,9 @@ FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
-LABEL maintainer="Jager <im@zhang.ge>"
-LABEL description="Docker Image of Grass-mining"
-
 WORKDIR /grass
+
+RUN apt-get update && apt-get install -y curl
 
 COPY requirements.txt /tmp/requirements.txt
 RUN pip3 install --upgrade pip && \
@@ -15,5 +14,10 @@ RUN pip3 install --upgrade pip && \
 
 COPY . .
 
-CMD ["python", "main.py"]
+COPY entrypoint.sh /grass/entrypoint.sh
 
+RUN chmod +x /grass/entrypoint.sh
+
+ENTRYPOINT [ "/grass/entrypoint.sh" ]
+
+CMD ["python", "main.py"]
