@@ -1,4 +1,4 @@
-THREADS = 5  # for register account / claim rewards mode / approve email mode
+THREADS = 100  # for register account / claim rewards mode / approve email mode
 MIN_PROXY_SCORE = 75  # Put MIN_PROXY_SCORE = 0 not to check proxy score (if site is down)
 
 #########################################

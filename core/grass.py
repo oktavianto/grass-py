@@ -88,7 +88,7 @@ class Grass(GrassWs, GrassRest, FailureCounter):
             await self.change_proxy()
             logger.info(f"{self.id} | Changed proxy to {self.proxy}. {msg}. Retrying...")
 
-            await asyncio.sleep(random.uniform(20, 30))
+            await asyncio.sleep(random.uniform(0, 2))
 
     async def run(self, browser_id: str, user_id: str):
         while True:
@@ -122,7 +122,7 @@ class Grass(GrassWs, GrassRest, FailureCounter):
                     if i:
                         self.fail_reset()
 
-                    await asyncio.sleep(random.randint(119, 120))
+                    await asyncio.sleep(random.randint(1, 5))
             except WebsocketClosedException as e:
                 logger.info(f"{self.id} | Websocket closed: {e}. Reconnecting...")
             except ConnectionResetError as e:
@@ -133,7 +133,7 @@ class Grass(GrassWs, GrassRest, FailureCounter):
 
             await self.failure_handler(limit=4)
 
-            await asyncio.sleep(5, 10)
+            await asyncio.sleep(1, 3)
 
     async def claim_rewards(self):
         await self.enter_account()
@@ -145,7 +145,7 @@ class Grass(GrassWs, GrassRest, FailureCounter):
            retry=(retry_if_exception_type(ConnectionError) | retry_if_not_exception_type(ProxyForbiddenException)),
            retry_error_callback=lambda retry_state:
            raise_error(WebsocketConnectionFailedError(f"{retry_state.outcome.exception()}")),
-           wait=wait_random(7, 10),
+           wait=wait_random(1, 3),
            reraise=True)
     async def connection_handler(self):
         logger.info(f"{self.id} | Connecting...")
@@ -155,7 +155,7 @@ class Grass(GrassWs, GrassRest, FailureCounter):
     @retry(stop=stop_after_attempt(5),
            retry=retry_if_not_exception_type(LowProxyScoreException),
            before_sleep=lambda retry_state, **kwargs: logger.info(f"{retry_state.outcome.exception()}"),
-           wait=wait_random(5, 7),
+           wait=wait_random(1, 3),
            reraise=True)
     async def handle_proxy_score(self, min_score: int):
         if (proxy_score := await self.get_proxy_score_by_device_id_handler()) is None:

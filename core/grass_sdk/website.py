@@ -40,7 +40,7 @@ class GrassRest(BaseClient):
             stop=stop_after_attempt(12),
             before_sleep=lambda retry_state, **kwargs: logger.info(f"{self.id} | Create Account Retrying...  | "
                                                                    f"{retry_state.outcome.exception()} "),
-            wait=wait_random(5, 8),
+            wait=wait_random(1, 3),
             reraise=True
         )
 
@@ -94,7 +94,7 @@ class GrassRest(BaseClient):
             stop=stop_after_attempt(3),
             before_sleep=lambda retry_state, **kwargs: logger.info(f"{self.id} | Retrying to claim rewards... "
                                                                    f"Continue..."),
-            wait=wait_random(5, 7),
+            wait=wait_random(1, 3),
             reraise=True
         )
 
@@ -117,7 +117,7 @@ class GrassRest(BaseClient):
             stop=stop_after_attempt(3),
             before_sleep=lambda retry_state, **kwargs: logger.info(f"{self.id} | Retrying to get points... "
                                                                    f"Continue..."),
-            wait=wait_random(5, 7),
+            wait=wait_random(1, 3),
             reraise=True
         )
 
@@ -146,7 +146,7 @@ class GrassRest(BaseClient):
             retry=retry_if_not_exception_type((LoginException, ProxyBlockedException)),
             before_sleep=lambda retry_state, **kwargs: logger.info(f"{self.id} | Login retrying... "
                                                                    f"{retry_state.outcome.exception()}"),
-            wait=wait_random(8, 12),
+            wait=wait_random(1, 3),
             reraise=True
         )
 
@@ -194,7 +194,7 @@ class GrassRest(BaseClient):
     async def send_approve_link(self, endpoint: str):
         @retry(
             stop=stop_after_attempt(3),
-            wait=wait_random(5, 7),
+            wait=wait_random(1, 3),
             reraise=True,
             before_sleep=lambda retry_state, **kwargs: logger.info(f"{self.id} | Retrying to send {endpoint}... "
                                                                    f"Continue..."),
@@ -218,7 +218,7 @@ class GrassRest(BaseClient):
     async def approve_email_handler(self, verify_token: str, endpoint: str):
         @retry(
             stop=stop_after_attempt(3),
-            wait=wait_random(5, 7),
+            wait=wait_random(1, 3),
             reraise=True,
             before_sleep=lambda retry_state, **kwargs: logger.info(f"{self.id} | Retrying to approve {endpoint}... "
                                                                    f"Continue..."),
@@ -252,7 +252,7 @@ Nonce: {timestamp}"""
     async def link_wallet(self, private_key: str):
         @retry(
             stop=stop_after_attempt(3),
-            wait=wait_random(5, 7),
+            wait=wait_random(1, 3),
             reraise=True,
             before_sleep=lambda retry_state, **kwargs: logger.info(f"{self.id} | Retrying to send link wallet... "
                                                                    f"Continue..."),

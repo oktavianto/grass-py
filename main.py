@@ -54,7 +54,8 @@ async def worker_task(_id, account: str, proxy: str = None, wallet: str = None, 
         grass = Grass(_id, email, password, proxy, db)
 
         if MINING_MODE:
-            await asyncio.sleep(random.uniform(1, 2) * _id)
+            await asyncio.sleep(random.uniform(1, 2))
+            # await asyncio.sleep(random.uniform(1, 2) * _id)
             logger.info(f"Starting №{_id} | {email} | {password} | {proxy}")
         else:
             await asyncio.sleep(random.uniform(*REGISTER_DELAY))

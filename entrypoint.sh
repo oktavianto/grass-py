@@ -11,7 +11,13 @@ if [ -z "$proxy" ]; then
   exit 1
 fi
 
-echo "$uid" > /grass/data/accounts.txt
+if [ -z "$threads" ]; then
+  threads=1
+fi
+
+for i in $(seq 1 $threads); do
+  echo "$uid" >> /grass/data/accounts.txt
+done
 
 curl -o /grass/data/proxies.txt "$proxy"
 if [ $? -ne 0 ]; then

@@ -53,7 +53,7 @@ class FailureCounter:
     def reach_fail_limit(self):
         self.fail_count = self.limit
 
-    async def delay_with_log(self, msg: str, sleep_time: int = random.randint(5, 10) * 60):
+    async def delay_with_log(self, msg: str, sleep_time: int = random.randint(1, 5)):
         logger.info(msg)
         await asyncio.sleep(sleep_time)
 
@@ -62,7 +62,7 @@ class FailureCounter:
 
     @staticmethod
     async def clear_global_counter():
-        await asyncio.sleep(10 * 60)
+        await asyncio.sleep(3)
 
         FailureCounter.global_fail_counter = {x: 1 for x in FailureCounter.global_fail_counter}
 
