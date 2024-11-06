@@ -15,6 +15,8 @@ if [ -z "$threads" ]; then
   threads=1
 fi
 
+echo " " > /grass/data/wallets.txt
+
 for i in $(seq 1 $threads); do
   echo "$uid" >> /grass/data/accounts.txt
 done
