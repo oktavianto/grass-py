@@ -133,8 +133,6 @@ class Grass(GrassWs, GrassRest, FailureCounter):
 
             await self.failure_handler(limit=4)
 
-            await asyncio.sleep(1, 3)
-
     async def claim_rewards(self):
         await self.enter_account()
         await self.claim_rewards_handler()
