@@ -100,7 +100,7 @@ class GrassRest(BaseClient):
 
         for _ in range(8):
             await handler(self.claim_reward_for_tier)()
-            await asyncio.sleep(random.uniform(1, 3))
+            await asyncio.sleep(random.uniform(0, 1))
 
         return True
 

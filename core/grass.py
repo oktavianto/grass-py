@@ -88,7 +88,7 @@ class Grass(GrassWs, GrassRest, FailureCounter):
             await self.change_proxy()
             logger.info(f"{self.id} | Changed proxy to {self.proxy}. {msg}. Retrying...")
 
-            await asyncio.sleep(random.uniform(0, 2))
+            await asyncio.sleep(random.uniform(0, 1))
 
     async def run(self, browser_id: str, user_id: str):
         while True:
@@ -122,7 +122,6 @@ class Grass(GrassWs, GrassRest, FailureCounter):
                     if i:
                         self.fail_reset()
 
-                    await asyncio.sleep(random.randint(1, 5))
             except WebsocketClosedException as e:
                 logger.info(f"{self.id} | Websocket closed: {e}. Reconnecting...")
             except ConnectionResetError as e:

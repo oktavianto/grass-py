@@ -62,7 +62,7 @@ class FailureCounter:
 
     @staticmethod
     async def clear_global_counter():
-        await asyncio.sleep(3)
+        await asyncio.sleep(1)
 
         FailureCounter.global_fail_counter = {x: 1 for x in FailureCounter.global_fail_counter}
 

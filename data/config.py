@@ -1,5 +1,7 @@
 THREADS = 100  # for register account / claim rewards mode / approve email mode
 MIN_PROXY_SCORE = 75  # Put MIN_PROXY_SCORE = 0 not to check proxy score (if site is down)
+PROXY_USERNAME = "" # username for proxyscrape
+PROXY_PASSWORD = ""
 
 #########################################
 APPROVE_EMAIL = False  # approve email (NEEDED IMAP AND ACCESS TO EMAIL)

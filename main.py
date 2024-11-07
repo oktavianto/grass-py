@@ -16,7 +16,7 @@ from core.utils import logger, file_to_list
 from core.utils.accounts_db import AccountsDB
 from core.utils.exception import EmailApproveLinkNotFoundException, LoginException, RegistrationException
 from core.utils.generate.person import Person
-from data.config import ACCOUNTS_FILE_PATH, PROXIES_FILE_PATH, REGISTER_ACCOUNT_ONLY, THREADS, REGISTER_DELAY, \
+from data.config import PROXY_USERNAME, PROXY_PASSWORD, ACCOUNTS_FILE_PATH, PROXIES_FILE_PATH, REGISTER_ACCOUNT_ONLY, THREADS, REGISTER_DELAY, \
     CLAIM_REWARDS_ONLY, APPROVE_EMAIL, APPROVE_WALLET_ON_EMAIL, MINING_MODE, CONNECT_WALLET, \
     WALLETS_FILE_PATH, SEND_WALLET_APPROVE_LINK_TO_EMAIL, SINGLE_IMAP_ACCOUNT, SEMI_AUTOMATIC_APPROVE_LINK
 
@@ -54,7 +54,7 @@ async def worker_task(_id, account: str, proxy: str = None, wallet: str = None, 
         grass = Grass(_id, email, password, proxy, db)
 
         if MINING_MODE:
-            await asyncio.sleep(random.uniform(1, 2))
+            await asyncio.sleep(random.uniform(0, 1))
             # await asyncio.sleep(random.uniform(1, 2) * _id)
             logger.info(f"Starting №{_id} | {email} | {password} | {proxy}")
         else:
@@ -114,6 +114,23 @@ async def worker_task(_id, account: str, proxy: str = None, wallet: str = None, 
         if grass:
             await grass.session.close()
 
+async def generate_proxies(accounts_count: int):
+    proxies = []
+    states = ['newyork', 'washington', 'california', 'texas', 'florida', 'newjersey']
+    country = 'us'
+    lifetime = 120
+    username = PROXY_USERNAME
+    password = PROXY_PASSWORD
+    state_index = random.randint(0, len(states) - 1)
+
+    for i in range(accounts_count):
+        session = f"r{random.random()}t"
+        proxy = f"{username}-country-{country}-state-{states[state_index]}-session-{session}-lifetime-{lifetime}:{password}@rp.proxyscrape.com:6060"
+        proxies.append(proxy)
+    
+    with open(PROXIES_FILE_PATH, 'w') as f:
+        f.write('\n'.join(proxies))
+    
 
 async def main():
     accounts = file_to_list(ACCOUNTS_FILE_PATH)
@@ -121,6 +138,8 @@ async def main():
     if not accounts:
         logger.warning("No accounts found!")
         return
+    
+    await generate_proxies((len(accounts)*10)*2)
 
     proxies = [Proxy.from_str(proxy).as_url for proxy in file_to_list(PROXIES_FILE_PATH)]
 
